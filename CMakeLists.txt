@@ -27,19 +27,31 @@ endif()
 
 # Testing option
 option(LAB1_BUILD_TESTS "build tests executables" ON)
+option(LAB1_PROFILE "profile" ON)
 message(STATUS "LAB1_BUILD_TESTS : ${LAB1_BUILD_TESTS}")
+message(STATUS "LAB1_PROFILE : ${LAB1_PROFILE}")
 
 # Testing option
 option(LAB2_BUILD_TESTS "build tests executables" ON)
+option(LAB2_PROFILE "profile" ON)
 message(STATUS "LAB2_BUILD_TESTS : ${LAB2_BUILD_TESTS}")
+message(STATUS "LAB2_PROFILE : ${LAB2_PROFILE}")
 
 # Testing option
 option(LAB3_BUILD_TESTS "build tests executables" ON)
+option(LAB3_PROFILE "profile" ON)
 message(STATUS "LAB3_BUILD_TESTS : ${LAB3_BUILD_TESTS}")
+message(STATUS "LAB3_PROFILE : ${LAB3_PROFILE}")
 
 # Testing option
 option(LAB4_BUILD_TESTS "build tests executables" ON)
+option(LAB4_PROFILE "profile" ON)
 message(STATUS "LAB4_BUILD_TESTS : ${LAB4_BUILD_TESTS}")
+message(STATUS "LAB4_PROFILE : ${LAB4_PROFILE}")
 
 # Add sub directories
 add_subdirectory(lab1)
+if (LAB1_PROFILE)
+    add_subdirectory(lab1/profile)
+endif()
+

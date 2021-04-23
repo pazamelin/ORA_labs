@@ -1,0 +1,1 @@
+/usr/bin/c++     CMakeFiles/stress.dir/stress.cpp.o  -o stress  ../src/libliblab1.a 
