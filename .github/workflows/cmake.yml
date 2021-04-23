@@ -49,5 +49,5 @@ jobs:
         echo "unit tests ..."
         ./unit
         echo "stress tests ..."
-        /stress
+        ./stress
         echo "done!"
