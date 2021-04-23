@@ -1,39 +1,45 @@
-# Works with 3.11 and tested through 3.19
-cmake_minimum_required(VERSION 3.1...3.19)
+# Works with 3.11 and tested through 3.20
+cmake_minimum_required(VERSION 3.11...3.20)
 
 # Project name and a few useful settings. Other commands can pick up the results
 project(ORA_labs
         VERSION 0.1
+        DESCRIPTION ""
         LANGUAGES CXX)
 
-# Optionally set things like CMAKE_CXX_STANDARD, CMAKE_POSITION_INDEPENDENT_CODE here
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED True)
-set(CMAKE_CXX_EXTENSIONS OFF)
+# Only do these if this is the main project, and not if it is included through add_subdirectory
+if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
 
-# Build options
-option(BUILD_TESTS "build tests executables" ON)
+    # Optionally set things like CMAKE_CXX_STANDARD, CMAKE_POSITION_INDEPENDENT_CODE here
 
-# Options' status
-message(STATUS "BUILD_TESTS: ${BUILD_TESTS}")
+    # Let's ensure -std=c++xx instead of -std=g++xx
+    set(CMAKE_CXX_EXTENSIONS OFF)
 
-## [testing]
-enable_testing()
-# Include the Catch2 testing library local header-only directory
-include_directories(PRIVATE extern/)
+    # Let's nicely support folders in IDEs
+    set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
-set(CATCH_PATH "${PROJECT_SOURCE_DIR}/extern/")
+    # Testing only available if this is the main app
+    # Note this needs to be done in the main CMakeLists
+    # since it calls enable_testing, which must be in the
+    # main CMakeLists.
+    include(CTest)
+endif()
 
-macro(register_test TEST_NAME)
-    if (BUILD_TESTS)
-        # Tests need to be added as executables first
-        add_executable(${TEST_NAME} ${TEST_NAME}.cpp)
+# Testing option
+option(LAB1_BUILD_TESTS "build tests executables" ON)
+message(STATUS "LAB1_BUILD_TESTS : ${LAB1_BUILD_TESTS}")
 
-        target_include_directories(${TEST_NAME} PRIVATE ${CATCH_PATH})
-        # If you register a test, then ctest and make test will run it.
-        # You can also run examples and check the output, as well.
-        add_test(NAME ${TEST_NAME} COMMAND ${TEST_NAME}) # Command can be a target
-    endif ()
-endmacro(register_test)
+# Testing option
+option(LAB2_BUILD_TESTS "build tests executables" ON)
+message(STATUS "LAB2_BUILD_TESTS : ${LAB2_BUILD_TESTS}")
 
-add_subdirectory(string_matching)
+# Testing option
+option(LAB3_BUILD_TESTS "build tests executables" ON)
+message(STATUS "LAB3_BUILD_TESTS : ${LAB3_BUILD_TESTS}")
+
+# Testing option
+option(LAB4_BUILD_TESTS "build tests executables" ON)
+message(STATUS "LAB4_BUILD_TESTS : ${LAB4_BUILD_TESTS}")
+
+# Add sub directories
+add_subdirectory(lab1)
