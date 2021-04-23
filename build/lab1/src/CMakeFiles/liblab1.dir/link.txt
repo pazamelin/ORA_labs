@@ -1,2 +1,0 @@
-/usr/bin/ar qc libliblab1.a  CMakeFiles/liblab1.dir/naive.cpp.o CMakeFiles/liblab1.dir/rabin_karp.cpp.o
-/usr/bin/ranlib libliblab1.a
