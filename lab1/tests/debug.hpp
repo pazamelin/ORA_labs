@@ -3,6 +3,7 @@
 #define DEBUG_LOG
 
 #include <random>
+#include <iostream> 
 
 auto get_seed()
 {
