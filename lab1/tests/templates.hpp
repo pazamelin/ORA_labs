@@ -63,7 +63,7 @@ void stress_test(AlgorithmLHS algorithmLhs,
 
             debug_log("text:", text);
             debug_log("pattern:", pattern);
-            debug_log("has pattern:", is_insert_pattern);
+            debug_log("has inserted pattern:", is_insert_pattern);
 
             std::size_t pos_lhs = 0;
             std::size_t pos_rhs = 0;
@@ -83,7 +83,8 @@ void stress_test(AlgorithmLHS algorithmLhs,
                 pos_lhs++;
                 pos_rhs++;
             }
-
+          
+            debug_log("");
         }
     }
 }
