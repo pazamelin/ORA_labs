@@ -23,6 +23,7 @@ if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
     # since it calls enable_testing, which must be in the
     # main CMakeLists.
     include(CTest)
+    enable_testing() 
 endif()
 
 # Testing option
