@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\mrtruth\Documents\GitHub\labs\ORA_labs\build\CMakeFiles\f5da4473c9fa8f41fc4ce9d051855648\Continuous.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\mrtruth\Documents\GitHub\labs\ORA_labs\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\Users\mrtruth\Documents\GitHub\labs\ORA_labs\build\CMakeFiles\Continuous" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{0A6889C3-404B-3A43-8BF0-97775C34E30B}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

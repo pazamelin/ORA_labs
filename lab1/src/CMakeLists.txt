@@ -5,7 +5,8 @@
 # file(GLOB HEADER_LIST CONFIGURE_DEPENDS "${ModernCMakeExample_SOURCE_DIR}/include/ilp/*.hpp")
 set(HEADER_LIST ../include/str_match/all.hpp)
 set(SOURCE_LIST naive.cpp
-				rabin_karp.cpp
+		rabin_karp.cpp
+                BoyerMooreHorspool.cpp
 )
 
 # Make an automatic library - will be static or dynamic based on user setting
