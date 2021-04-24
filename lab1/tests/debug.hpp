@@ -1,6 +1,6 @@
 #define SEED RAND
 #define PRINT_SEED 0
-// #define DEBUG_LOG
+#define DEBUG_LOG
 
 #include <random>
 
