@@ -31,9 +31,14 @@ namespace str_match
 		while ((j >= 0) && (i <= text_size - 1)) {
 			j = pattern_size - 1;
 			k = i;
-			while ((j >= 0) && (text[pos + k] == pattern[j])) {
-				k--;
-				j--;
+			if (pos + k <= text_size) {
+				while ((j >= 0) && (text[pos + k] == pattern[j])) {
+					k--;
+					j--;
+				}
+			}
+			else {
+				return text.size();
 			}
 			i += offsetTable[text[pos + i]];
 		}
