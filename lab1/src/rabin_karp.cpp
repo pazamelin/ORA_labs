@@ -11,6 +11,8 @@ namespace str_match
     std::pair<std::size_t, std::size_t>
     rabin_karp(const std::string& text, const std::string& pattern, std::size_t pos)
     {
+        std::size_t operations = 0;
+        
         // hash pattern
         const std::size_t pattern_hash = detail::rolling_hash(pattern, 0, pattern.size());
 
