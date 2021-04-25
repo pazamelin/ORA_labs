@@ -50,18 +50,19 @@ namespace profiler
         std::size_t text_size;
         std::vector<std::size_t> pattern_sizes;       
         std::vector<double> time_for_pattern_size;
+        std::int operations = 0;
     };
 
     template <typename Algorithm>
     std::vector<profile_statistic> profile(Algorithm algorithm,
-                                           std::size_t text_size_min,
-                                           std::size_t text_size_max,
-                                           std::size_t text_size_step,
-                                           std::size_t pattern_size_min,
-                                           std::size_t pattern_size_max,
-                                           std::size_t pattern_size_step,
-                                           std::size_t iterations_per_size_pair                                  
-    )
+     std::size_t text_size_min,
+     std::size_t text_size_max,
+     std::size_t text_size_step,
+     std::size_t pattern_size_min,
+     std::size_t pattern_size_max,
+     std::size_t pattern_size_step,
+     std::size_t iterations_per_size_pair                                  
+     )
     {
         std::vector<profile_statistic> result;
 
@@ -97,8 +98,8 @@ namespace profiler
             result_for_text_size.text_size = text_size;
 
             for (std::size_t pattern_size = pattern_size_min;
-                             pattern_size < pattern_size_max;
-                             pattern_size += pattern_size_step)
+               pattern_size < pattern_size_max;
+               pattern_size += pattern_size_step)
             {   
                 result_for_text_size.pattern_sizes.push_back(pattern_size);
                 double total_time = 0;
@@ -122,7 +123,7 @@ namespace profiler
                     {
                         {
                             ACCUMULATE_DURATION(total_time);
-                            pos = algorithm(text, pattern, pos);                            
+                            pos = algorithm(text, pattern, pos).first;                            
                         }
 
                         pos++;
@@ -134,9 +135,35 @@ namespace profiler
                 result_for_text_size.time_for_pattern_size.push_back(average_time);
             }
 
-                result.emplace_back(std::move(result_for_text_size));            
+            result.emplace_back(std::move(result_for_text_size));            
         }
 
+
+        return result;
+    }
+
+    template <typename Algorithm>
+    profile_statistic run_bencmark(Algorithm algorithm,
+                                                const std::string& text,
+                                                const std::string& pattern,
+                                                std::size_t repeats                                 
+    )
+    {
+        profile_statistic result;
+        result.text_size = text.size();
+        result.pattern_sizes = {pattern.size()};
+
+        double total_time = 0;
+
+        for (std::size_t i = 0; i < repeats; i++)
+        {
+            ACCUMULATE_DURATION(total_time);
+            auto [pos, ops] = algorithm(text, pattern, 0);  
+        }
+
+        double average_time = total_time / repeats;
+        result.time_for_pattern_size = {average_time};        
+        result.operations = ops;
 
         return result;
     }

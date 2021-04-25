@@ -104,11 +104,123 @@ void profile_all()
 
 		write_csv(filename_prefix + "rabin_karp.csv", results);
 	}	
+
+	{   // BOYER_MOORE_HORSPOOL
+		const auto results = profile(str_match::boyer_moore_horspool,
+								 text_size_min,
+								 text_size_max,
+								 text_size_step,
+								 pattern_size_min,
+								 pattern_size_max,
+								 pattern_size_step,
+								 iterations_per_size_pair);
+
+		write_csv(filename_prefix + "BMH.csv", results);
+	}	
+
+	{   // KNUTH_MORRIS_PRATT
+		const auto results = profile(str_match::knuth_morris_pratt,
+								 text_size_min,
+								 text_size_max,
+								 text_size_step,
+								 pattern_size_min,
+								 pattern_size_max,
+								 pattern_size_step,
+								 iterations_per_size_pair);
+
+		write_csv(filename_prefix + "KMP.csv", results);
+	}
 }
 
+void run_benchmarks()
+{
+	std::string filename_prefix = "../../../lab1/profile/results/";
+	std::string benchmarks_prefix = "../../../lab1/profile/benchmarks/";
+
+	auto read_file = [](const std::string& filename)
+	{
+		std::ifstream csv_file(filename, std::ios::in);
+		if (csv_file.is_open())
+		{
+			return std::string(std::istreambuf_iterator<char>(csv_file),
+                 			   std::istreambuf_iterator<char>());
+		}
+		else
+		{
+			throw std::runtime_error("failed to open a file IN");
+		}
+	};
+
+	std::vector<std::string> types = {"bad", "good"};
+	std::vector<int> nums = {1, 2, 3, 4};
+
+	std::ofstream csv_file(filename_prefix + "benchmarking.txt", std::ios::out | std::ios::trunc);
+	if (!csv_file.is_open())
+	{
+		throw std::runtime_error("failed to open a file OUT");
+	}
+
+	csv_file << "benchmark, algorithm, time, operations\n";	 
+
+	for (const auto& type : types)
+	{
+		for (int num : nums)
+		{
+			std::string filename_t = benchmarks_prefix + type + "_t_" + std::to_string(num) + ".txt";
+			std::string filename_w = benchmarks_prefix + type + "_w_" + std::to_string(num) + ".txt";
+			std::string text = read_file(filename_t);
+			std::cout << "TEXT: " << text << std::endl;
+
+			std::string pattern = read_file(filename_w);
+			std::cout << "PATTERN: " << pattern << std::endl;			
+
+			{   // NAIVE
+				csv_file << type + "_" + std::to_string(num) << ",";
+
+				auto result_1 = profiler::run_bencmark(str_match::naive,
+													   text,
+													   pattern, 10);
+				csv_file << "naive," << result_1.time_for_pattern_size[0] << "," << result_1.operations << "\n";	
+			}
+
+			{   // RABIN_KARP
+				csv_file << type + "_" + std::to_string(num) << ",";
+
+				auto result_1 = profiler::run_bencmark(str_match::rabin_karp,
+													   text,
+													   pattern, 10);
+				csv_file << "rabin_karp," << result_1.time_for_pattern_size[0]<< "," << result_1.operations << "\n";	
+			}
+
+			
+			{   // BMH
+				csv_file << type + "_" + std::to_string(num) << ",";
+
+				auto result_1 = profiler::run_bencmark(str_match::boyer_moore_horspool,
+													   text,
+													   pattern, 10);
+				csv_file << "BMH," << result_1.time_for_pattern_size[0] << "," << result_1.operations << "\n";	
+			}
+
+			
+			{   // KMP
+				csv_file << type + "_" + std::to_string(num) << ",";
+
+				auto result_1 = profiler::run_bencmark(str_match::knuth_morris_pratt,
+													   text,
+													   pattern, 10);
+				csv_file << "KMP," << result_1.time_for_pattern_size[0] << "," << result_1.operations << "\n";
+			}
+			
+		}
+	}
+	
+
+}
 
 int main(int argc, char* argv[])
 {
-	profile_all();
+	//profile_all();
+	run_benchmarks();
 	return 0;
 }

@@ -6,21 +6,34 @@
 
 namespace str_match
 {
-    std::size_t naive(const std::string& text, const std::string& pattern, std::size_t pos)
+    std::pair<std::size_t, std::size_t>
+    naive(const std::string& text, const std::string& pattern, std::size_t pos)
     {
+        std::size_t operations = 0;
+
         // iterate over all snippets of text with the same size as pattern
         for (; pos < text.size() - pattern.size() + 1; pos++)
         {   // check every one of them for a match
-            bool match = std::equal(&pattern[0], &pattern[0] + pattern.size(), &text[pos]);
+            bool match = true;
+
+            for (std::size_t i = 0; i < pattern.size(); i++)
+            {
+                operations++;
+                if (text[pos + i] != pattern[i])
+                {
+                    match = false;
+                    break;
+                }
+            }
 
             if (match)
             {
-                return pos; // first match position in text 
+                return {pos, operations}; // first match position in text 
             }
 
         }
 
-        return text.size(); // match not found
+        return {text.size(), operations}; // match not found
     }
 
 
