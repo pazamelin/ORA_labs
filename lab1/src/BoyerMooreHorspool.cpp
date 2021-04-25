@@ -13,6 +13,7 @@ namespace str_match
 		int text_size = text.size();
 		int pattern_size = pattern.size();
 		std::size_t counter = 0;
+		bool flag = false;
 		if (pattern_size > text_size) {
 			std::pair<std::size_t, std::size_t> result = std::make_pair(text.size(), counter); 
 			return result; // match not found
@@ -35,11 +36,17 @@ namespace str_match
 			j = pattern_size - 1;
 			k = i;
 			if (pos + k <= text_size) {
+				counter++;
 				while ((j >= 0) && (text[pos + k] == pattern[j])) {
 					k--;
 					j--;
 					counter++;
+					flag = true;
 				}
+				if (flag) {
+					counter--;
+				}
+				flag = false;
 			}
 			else {
 				std::pair<std::size_t, std::size_t> result = std::make_pair(text.size(), counter);
