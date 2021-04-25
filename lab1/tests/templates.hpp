@@ -68,21 +68,18 @@ void stress_test(AlgorithmLHS algorithmLhs,
             std::size_t pos_lhs = 0;
             std::size_t pos_rhs = 0;
 
-            while (pos_lhs < text_size && pos_rhs < text_size)
+            pos_lhs = algorithmLhs(text, pattern, pos_lhs);
+            pos_rhs = algorithmRhs(text, pattern, pos_rhs);
+            
+            if (pos_lhs != pos_rhs)
             {
-                pos_lhs = algorithmLhs(text, pattern, pos_lhs);
-                pos_rhs = algorithmRhs(text, pattern, pos_rhs);
-
                 (pos_lhs == text_size) ? debug_log("     LHS did not find")
                                        : debug_log("     LHS found at:", pos_lhs);
                 (pos_rhs == text_size) ? debug_log("     RHS did not find")
                                        : debug_log("     RHS found at:", pos_rhs);
-
-                REQUIRE(pos_lhs == pos_rhs);
-
-                pos_lhs++;
-                pos_rhs++;
             }
+          
+            REQUIRE(pos_lhs == pos_rhs);
           
             debug_log("");
         }
