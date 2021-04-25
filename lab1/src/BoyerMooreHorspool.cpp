@@ -42,7 +42,7 @@ namespace str_match
 			}
 			i += offsetTable[text[pos + i]];
 		}
-		if (k >= text_size - pattern_size) {
+		if (j >= 0) {
 			return text.size(); // match not found
 		}
 		else {
