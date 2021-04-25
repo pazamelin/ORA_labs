@@ -220,7 +220,7 @@ void run_benchmarks()
 
 int main(int argc, char* argv[])
 {
-	//profile_all();
+	profile_all();
 	run_benchmarks();
 	return 0;
 }
