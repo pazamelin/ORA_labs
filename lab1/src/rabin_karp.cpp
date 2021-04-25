@@ -8,7 +8,8 @@
 
 namespace str_match
 {
-    std::size_t rabin_karp(const std::string& text, const std::string& pattern, std::size_t pos)
+    std::pair<std::size_t, std::size_t>
+    rabin_karp(const std::string& text, const std::string& pattern, std::size_t pos)
     {
         // hash pattern
         const std::size_t pattern_hash = detail::rolling_hash(pattern, 0, pattern.size());
@@ -22,10 +23,21 @@ namespace str_match
             // compare for match only if the hashs are equal
             if (subtext_hash == pattern_hash)
             {
-                bool match = std::equal(&pattern[0], &pattern[0] + pattern.size(), &text[pos]);
+                bool match = true;
+
+                for (std::size_t i = 0; i < pattern.size(); i++)
+                {
+                    operations++;
+                    if (text[pos + i] != pattern[i])
+                    {
+                        match = false;
+                        break;
+                    }
+                }
+
                 if (match)
                 {
-                    return pos;
+                    return {pos, operations}; // first match position in text 
                 }
             }
 
@@ -33,7 +45,7 @@ namespace str_match
             subtext_hash = detail::roll_hash(text, pos + 1, pattern.size(), subtext_hash);
         }
 
-        return text.size(); // match not found
+        return {text.size(), operations}; // match not found
     }
 
     namespace detail

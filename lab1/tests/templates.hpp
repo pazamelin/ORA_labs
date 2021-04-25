@@ -64,8 +64,8 @@ void stress_test(AlgorithmLHS algorithmLhs,
             std::size_t pos_lhs = 0;
             std::size_t pos_rhs = 0;
 
-            pos_lhs = algorithmLhs(text, pattern, pos_lhs);
-            pos_rhs = algorithmRhs(text, pattern, pos_rhs);
+            pos_lhs = algorithmLhs(text, pattern, pos_lhs).first;
+            pos_rhs = algorithmRhs(text, pattern, pos_rhs).first;
             
             if (pos_lhs != pos_rhs)
             {

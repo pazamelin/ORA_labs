@@ -10,6 +10,7 @@ namespace str_match
 		std::vector<std::size_t> prefix_function(const std::string& s);
 	}
 
-	std::size_t knuth_morris_pratt(const std::string& text, const std::string& pattern, std::size_t pos);
+	std::pair<std::size_t, std::size_t>
+	knuth_morris_pratt(const std::string& text, const std::string& pattern, std::size_t pos);
 
 }  // namespace str_match
