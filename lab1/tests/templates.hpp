@@ -61,10 +61,6 @@ void stress_test(AlgorithmLHS algorithmLhs,
                 insert_pattern(text, pattern, pattern_pos(gen));
             }
 
-            debug_log("text:", text);
-            debug_log("pattern:", pattern);
-            debug_log("has inserted pattern:", is_insert_pattern);
-
             std::size_t pos_lhs = 0;
             std::size_t pos_rhs = 0;
 
@@ -73,6 +69,10 @@ void stress_test(AlgorithmLHS algorithmLhs,
             
             if (pos_lhs != pos_rhs)
             {
+                debug_log("text:", text);
+                debug_log("pattern:", pattern);
+                debug_log("has inserted pattern:", is_insert_pattern);
+
                 (pos_lhs == text_size) ? debug_log("     LHS did not find")
                                        : debug_log("     LHS found at:", pos_lhs);
                 (pos_rhs == text_size) ? debug_log("     RHS did not find")
