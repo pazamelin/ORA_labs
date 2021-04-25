@@ -15,6 +15,12 @@ namespace str_match
 		if (pattern_size > text_size) {
 			return text.size(); // match not found
 		}
+		if (pos != 0) {
+			pos += pattern_size;
+		}
+		if (pos + pattern_size > text_size) {
+			return text.size();
+		}
 		std::vector<int> offsetTable(256, pattern_size);
 		for (size_t i = 0; i < pattern_size - 1; ++i) {
 			offsetTable[(int)pattern[i]] = pattern_size - i - 1;
