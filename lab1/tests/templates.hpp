@@ -77,11 +77,11 @@ void stress_test(AlgorithmLHS algorithmLhs,
                                        : debug_log("     LHS found at:", pos_lhs);
                 (pos_rhs == text_size) ? debug_log("     RHS did not find")
                                        : debug_log("     RHS found at:", pos_rhs);
+              
+                debug_log("");              
             }
           
-            REQUIRE(pos_lhs == pos_rhs);
-          
-            debug_log("");
+            REQUIRE(pos_lhs == pos_rhs);          
         }
     }
 }
