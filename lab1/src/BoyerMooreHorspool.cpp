@@ -15,9 +15,9 @@ namespace str_match
 		if (pattern_size > text_size) {
 			return text.size(); // match not found
 		}
-		if (pos != 0) {
+		/*if (pos != 0) {
 			pos += pattern_size;
-		}
+		}*/
 		if (pos + pattern_size > text_size) {
 			return text.size();
 		}
