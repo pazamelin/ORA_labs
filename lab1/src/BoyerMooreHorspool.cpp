@@ -41,7 +41,7 @@ namespace str_match
 			return text.size(); // match not found
 		}
 		else {
-			return k + 1;
+			return pos + k + 1;
 		}
 	}
 
