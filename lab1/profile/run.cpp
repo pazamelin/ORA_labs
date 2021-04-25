@@ -154,7 +154,7 @@ void run_benchmarks()
 	std::vector<std::string> types = {"bad", "good"};
 	std::vector<int> nums = {1, 2, 3, 4};
 
-	std::ofstream csv_file(filename_prefix + "benchmarking.txt", std::ios::out | std::ios::trunc);
+	std::ofstream csv_file(filename_prefix + "benchmarking.csv", std::ios::out | std::ios::trunc);
 	if (!csv_file.is_open())
 	{
 		throw std::runtime_error("failed to open a file OUT");

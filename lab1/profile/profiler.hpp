@@ -50,7 +50,7 @@ namespace profiler
         std::size_t text_size;
         std::vector<std::size_t> pattern_sizes;       
         std::vector<double> time_for_pattern_size;
-        std::int operations = 0;
+        std::size_t operations = 0;
     };
 
     template <typename Algorithm>
@@ -155,15 +155,17 @@ namespace profiler
 
         double total_time = 0;
 
+        std::size_t operations_last;
         for (std::size_t i = 0; i < repeats; i++)
         {
             ACCUMULATE_DURATION(total_time);
-            auto [pos, ops] = algorithm(text, pattern, 0);  
+            auto [pos, operations] = algorithm(text, pattern, 0);  
+            operations_last = operations;
         }
 
         double average_time = total_time / repeats;
         result.time_for_pattern_size = {average_time};        
-        result.operations = ops;
+        result.operations = operations_last;
 
         return result;
     }
