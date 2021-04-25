@@ -8,9 +8,10 @@
 
 namespace str_match
 {
-	std::size_t  knuth_morris_pratt(const std::string& text, const std::string& pattern, std::size_t pos) {
+	std::pair<std::size_t, std::size_t>  knuth_morris_pratt(const std::string& text, const std::string& pattern, std::size_t pos) {
 		std::vector<std::size_t> pf(pattern.size());
 		pf = detail::prefix_function(pattern);
+		std::size_t counter = 0;
 		int k = 0;
 		size_t index = text.size();
 		for (size_t i = pos; i < text.size(); ++i) {
@@ -19,13 +20,15 @@ namespace str_match
 			}
 			if (pattern[k] == text[i]) {
 				k++;
+				counter++;
 			}
 			if (k == pattern.size()) {
 				index = i - pattern.size() + 1;
 				break;
 			}
 		}
-		return index;
+		std::pair<std::size_t, std::size_t> result = std::make_pair(index, counter);
+		return result;
 	}
 
 	namespace detail

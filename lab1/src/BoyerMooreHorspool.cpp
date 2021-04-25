@@ -9,17 +9,20 @@
 namespace str_match
 {
 
-	std::size_t boyer_moore_horspool(const std::string& text, const std::string& pattern, std::size_t pos) {
+	std::pair<std::size_t, std::size_t> boyer_moore_horspool(const std::string& text, const std::string& pattern, std::size_t pos) {
 		int text_size = text.size();
 		int pattern_size = pattern.size();
+		std::size_t counter = 0;
 		if (pattern_size > text_size) {
-			return text.size(); // match not found
+			std::pair<std::size_t, std::size_t> result = std::make_pair(text.size(), counter); 
+			return result; // match not found
 		}
 		/*if (pos != 0) {
 			pos += pattern_size;
 		}*/
 		if (pos + pattern_size > text_size) {
-			return text.size();
+			std::pair<std::size_t, std::size_t> result = std::make_pair(text.size(), counter);
+			return result; // match not found
 		}
 		std::vector<int> offsetTable(256, pattern_size);
 		for (size_t i = 0; i < pattern_size - 1; ++i) {
@@ -35,18 +38,23 @@ namespace str_match
 				while ((j >= 0) && (text[pos + k] == pattern[j])) {
 					k--;
 					j--;
+					counter++;
 				}
 			}
 			else {
-				return text.size();
+				std::pair<std::size_t, std::size_t> result = std::make_pair(text.size(), counter);
+				return result; // match not found
 			}
 			i += offsetTable[text[pos + i]];
 		}
 		if (j >= 0) {
-			return text.size(); // match not found
+			std::pair<std::size_t, std::size_t> result = std::make_pair(text.size(), counter);
+			return result; // match not found
 		}
 		else {
-			return pos + k + 1;
+			std::size_t ans = pos + k + 1;
+			std::pair<std::size_t, std::size_t> result = std::make_pair(ans, counter);
+			return result;
 		}
 	}
 
