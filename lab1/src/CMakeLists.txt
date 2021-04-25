@@ -7,6 +7,7 @@ set(HEADER_LIST ../include/str_match/all.hpp)
 set(SOURCE_LIST naive.cpp
 		rabin_karp.cpp
                 BoyerMooreHorspool.cpp
+                KnuthMorrisPratt.cpp
 )
 
 # Make an automatic library - will be static or dynamic based on user setting
