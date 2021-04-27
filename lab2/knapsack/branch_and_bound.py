@@ -1,95 +1,32 @@
-from problem import KnapsackProblem, KnapsackSolution
+from knapsack.problem import KnapsackProblem, KnapsackSolution
+from copy import deepcopy
 
 from queue import Queue
-import warnings
 
 
-def assert_is_solution_partial(problem, partial_solution):
-    k = len(partial_solution)
-    n = len(problem.weights)
-
-    if k > n:
-        raise AssertionError("partial solution is out of range")
-    if k == n:
-        warnings.warn("the solution is not partial")
-        return partial_solution.profit
-
-
-def profit_upper_bound(problem, partial_solution):
+def upper_bound(problem, partial_solution):
     """
         Find an upper bound on a partial solution by
         solving relaxation problem from it
     """
-    assert_is_solution_partial(problem, partial_solution)
-
-    k = len(partial_solution)
+    k = partial_solution.level_index
     profit = partial_solution.profit
     residual_capacity = partial_solution.residual_capacity
 
-    for price, weight in zip(problem.prices[:k],
-                             problem.weights[:k]):
-        residual_capacity -= weight
-        if residual_capacity > 0:
+    for item in problem.items:
+        residual_capacity -= item.weight
+        if residual_capacity >= 0:
             # take the item
-            profit += price
+            profit += item.price
         else:
             # take as big part of the item as possible
-            profit += price * (-residual_capacity / weight)
+            profit += item.price * ((item.weight + residual_capacity) / item.weight)
             break
 
     return profit
 
 
-def horowitz_sahni_forward_move(problem, partial_solution):
-    """
-        A forward move consists of inserting the largest possible set
-        of new consecutive items into the current solution
-    """
-    k = len(partial_solution)
-    n = len(problem.weights)
-    partial_solution.last_inserted_index = None
-    next_index = None
-
-    for i in range(k, n, 1):
-        weight = problem.weights[i]
-        price = problem.prices[i]
-
-        if weight <= partial_solution.residual_capacity:
-            partial_solution.residual_capacity -= weight
-            partial_solution.profit += price
-            partial_solution.is_item_taken.append(True)
-            partial_solution.last_inserted = i
-            next_index = i
-        else:
-            break
-
-    return next_index
-
-
-def horowitz_sahni_backtracking_move(problem, partial_solution, current_index):
-    """
-        A backtracking move consists of removing the last inserted item
-        from the current solution
-    """
-    next_index = None
-
-    backtrack_index = current_index - 1
-    while backtrack_index > 0 and not partial_solution.is_item_taken[backtrack_index]:
-        backtrack_index -= 1
-
-    if partial_solution.is_item_taken[backtrack_index]:
-        partial_solution.is_item_taken[backtrack_index] = 0
-        partial_solution.profit -= problem.prices[backtrack_index]
-        partial_solution.weight -= problem.weights[backtrack_index]
-        partial_solution.residual_capacity += problem.weights[backtrack_index]
-
-        next_index = backtrack_index + 1
-
-    return next_index
-
-
-def horowitz_sahni(problem):
-    # Initialize
+def branch_and_bound(problem):
     best_solution = KnapsackSolution(problem.number_of_items,
                                      knapsack_capacity=problem.capacity)
     solutions_queue = Queue()
@@ -97,6 +34,22 @@ def horowitz_sahni(problem):
 
     while not solutions_queue.empty():
         current_solution = solutions_queue.get()
+        index = current_solution.level_index
 
+        if current_solution.profit > best_solution.profit:
+            best_solution = deepcopy(current_solution)
 
+        if index != problem.number_of_items:
+            profit_upper_bound = upper_bound(problem, current_solution)
+            if profit_upper_bound >= best_solution.profit:
+                new_solution_lhs = deepcopy(current_solution)
+                new_solution_lhs.level_index = index + 1
+                solutions_queue.put(new_solution_lhs)
 
+                new_solution_rhs = deepcopy(current_solution)
+                has_inserted = new_solution_rhs.take_item(index, problem.items[index])
+                if has_inserted:
+                    new_solution_rhs.level_index = index + 1
+                    solutions_queue.put(new_solution_rhs)
+
+    return best_solution
