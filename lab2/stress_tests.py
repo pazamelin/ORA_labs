@@ -53,5 +53,5 @@ generator = ProblemGenerator(capacity=50)
 stress_test_template(exact_algorithm_lhs=branch_and_bound,
                      exact_algorithm_rhs=branch_and_bound,
                      problem_generator=generator,
-                     n_min=1, n_max=20, n_step=2,
+                     n_min=1, n_max=20, n_step=1,
                      verbose=True)
