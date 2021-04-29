@@ -1,5 +1,6 @@
 from knapsack.problem import KnapsackProblem, KnapsackSolution
 from knapsack.branch_and_bound import branch_and_bound
+from knapsack.dynprog import knapsack_dp
 import random
 
 
@@ -51,7 +52,7 @@ def stress_test_template(exact_algorithm_lhs,
 
 generator = ProblemGenerator(capacity=50)
 stress_test_template(exact_algorithm_lhs=branch_and_bound,
-                     exact_algorithm_rhs=branch_and_bound,
+                     exact_algorithm_rhs=knapsack_dp,
                      problem_generator=generator,
                      n_min=1, n_max=20, n_step=2,
                      verbose=True)

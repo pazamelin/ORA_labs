@@ -1,28 +1,38 @@
 from knapsack.problem import KnapsackProblem, KnapsackSolution
 
 
-def knapsack_greedy(W, wt, val, n):
+def approx(problem):
     solution = KnapsackSolution(problem.number_of_items, knapsack_capacity=problem.capacity)
     T = {}
-    for i in range(n):
-        T[float(wt[i])/float(val[i])] = i
+    ans = [0 for x in range(problem.number_of_items)]
+    for i in range(problem.number_of_items):
+        T[float(problem.weights[i])/float(problem.prices[i])] = i
 
     K = T.keys()
     K = sorted(K)
 
-    C_greedy=0
-    W_greedy=0
+    price = 0
+    weight = 0
     for i in K:
-        if W_greedy + wt[T[i]] <= W:
-            W_greedy = W_greedy + wt[T[i]]
-            C_greedy = C_greedy + val[T[i]]
+        if weight + problem.weights[T[i]] <= problem.capacity:
+            weight += problem.weights[T[i]]
+            price += problem.prices[T[i]]
+            ans[T[i]] = 1
         else:
-            C_max = val[T[i]]
-            if C_max > C_greedy:
-                solution.profit = C_max
-                solution.weight = wt[T[i]]
+            price_greedy = problem.prices[T[i]]
+            if price_greedy > price:
+                solution.profit = price_greedy
+                solution.weight = problem.weights[T[i]]
+                solution.residual_capacity -= solution.weight
+                ans = [0 for x in range(problem.number_of_items)]
+                ans[T[i]] = 1
+            else:
+                solution.profit = price
+                solution.weight = weight
                 solution.residual_capacity -= solution.weight
 
-    solution.profit = C_result
+    for i in range(problem.number_of_items):
+        if ans[i] == 1:
+            solution.is_item_taken = True
 
-    return C_result
+    return solution
