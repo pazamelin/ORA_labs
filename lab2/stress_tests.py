@@ -1,31 +1,57 @@
 from knapsack.problem import KnapsackProblem, KnapsackSolution
 from knapsack.branch_and_bound import branch_and_bound
-
 import random
 
-random.seed(0)
+
+# random.seed(0)
 
 
-def generate_problem(capacity, price_min, price_max, weight_min, weight_max, n):
-    prices = []
-    weights = []
+class ProblemGenerator:
+    def __init__(self, capacity, seed=random.randint(0, 1000000)):
+        self.capacity = capacity
+        random.seed(seed)
 
-    for i in range(0, n):
-        prices.append(random.randint(price_min, price_max))
-        weights.append(random.randint(weight_min, weight_max))
+        self.weight_min = 1
+        self.weight_max = capacity - 1
+        self.price_min = self.weight_min * 2
+        self.price_max = self.weight_max * 2
 
-    return KnapsackProblem(capacity, prices, weights)
+    def __call__(self, number_of_items):
+        prices = []
+        weights = []
+
+        for i in range(0, number_of_items):
+            prices.append(random.randint(self.price_min, self.price_max))
+            weights.append(random.randint(self.weight_min, self.weight_max))
+
+        return KnapsackProblem(self.capacity, prices, weights)
+
+
+def are_equal(solution_lhs, solution_rhs):
+    return solution_lhs.profit == solution_rhs.profit
 
 
 def stress_test_template(exact_algorithm_lhs,
                          exact_algorithm_rhs,
-                         capacity=100,
-                         price_min=10,
-                         price_max=100,
-                         weight_min=1,
-                         weight_max=10,
-                         n=100):
-    problem = generate_problem(capacity, price_min, price_max, weight_min, weight_max, n)
-    solution_lhs = exact_algorithm_lhs(problem)
-    solution_rhs = exact_algorithm_rhs(problem)
-    assert (solution_lhs == solution_rhs)
+                         problem_generator,
+                         n_min, n_max, n_step,
+                         iterations_per_step=10,
+                         verbose=False):
+
+    for n in range(n_min, n_max, n_step):
+        for iteration in range(0, iterations_per_step, 1):
+            problem = problem_generator(n)
+            solution_lhs = exact_algorithm_lhs(problem)
+            solution_rhs = exact_algorithm_rhs(problem)
+            result = are_equal(solution_lhs, solution_rhs)
+            if verbose:
+                result_label = 'OK' if result else 'FAIL'
+                print('size: {}, iteration: {} --> {}'.format(n, iteration, result_label))
+
+
+generator = ProblemGenerator(capacity=50)
+stress_test_template(exact_algorithm_lhs=branch_and_bound,
+                     exact_algorithm_rhs=branch_and_bound,
+                     problem_generator=generator,
+                     n_min=1, n_max=20, n_step=2,
+                     verbose=True)
