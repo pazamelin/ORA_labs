@@ -45,6 +45,8 @@ class KnapsackProblem:
 
         self.capacity = capacity
         self.number_of_items = len(self.items)
+        self.prices = prices
+        self.weights = weights
 
 
 class KnapsackSolution:
