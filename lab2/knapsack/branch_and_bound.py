@@ -34,18 +34,24 @@ def branch_and_bound(problem):
 
     while not solutions_queue.empty():
         current_solution = solutions_queue.get()
+        # index of the last added (or not) element from [0, n] range
         index = current_solution.level_index
 
         if current_solution.profit > best_solution.profit:
+            # update best solution if needed
             best_solution = deepcopy(current_solution)
 
         if index != problem.number_of_items:
             profit_upper_bound = upper_bound(problem, current_solution)
             if profit_upper_bound >= best_solution.profit:
+                # if the partial solution can possibly result in a better solution
+
+                # add (current solution + x_index as not taken) in the queue
                 new_solution_lhs = deepcopy(current_solution)
                 new_solution_lhs.level_index = index + 1
                 solutions_queue.put(new_solution_lhs)
 
+                # add (current solution + x_index as taken) in the queue
                 new_solution_rhs = deepcopy(current_solution)
                 has_inserted = new_solution_rhs.take_item(index, problem.items[index])
                 if has_inserted:
