@@ -17,9 +17,20 @@ def fptas(problem, eps_parameter=0.5):
     # compute prices adjustment factor
     k = (max_valued_item.price * eps_parameter) / problem.items.number_of_items
 
+    prices_unadjusted = deepcopy(problem.prices)
+
     # adjust prices
     for index in range(0, problem.number_of_items):
         problem.prices[index] = math.floor(problem.prices[index] / k)
 
     # run dp algorithm
-    return knapsack_dp(problem)
+    solution = knapsack_dp(problem)
+
+    # recompute profit value using unadjusted prices
+    solution.prices = prices_unadjusted
+    solution.profit = 0
+    for index in range(0, problem.number_of_items):
+        if solution.is_item_taken[index]:
+            solution.profit += problem.prices[index]
+
+    return solution
