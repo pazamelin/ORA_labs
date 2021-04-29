@@ -55,6 +55,7 @@ def branch_and_bound(problem):
                 new_solution_rhs = deepcopy(current_solution)
                 has_inserted = new_solution_rhs.take_item(index, problem.items[index])
                 if has_inserted:
+                    # do not add if the solution's weight exceeds available capacity
                     new_solution_rhs.level_index = index + 1
                     solutions_queue.put(new_solution_rhs)
 
