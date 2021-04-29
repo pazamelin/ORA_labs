@@ -15,6 +15,9 @@ class KnapsackItem:
 
 class KnapsackProblem:
     """ Class holding 0-1 Knapsack problem data """
+    capacity: int
+    items: List[KnapsackItem]
+    number_of_items: int
 
     def __init__(self,
                  capacity: int,
