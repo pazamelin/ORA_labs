@@ -2,7 +2,7 @@ from typing import List
 
 
 def is_positive_integer(x):
-    return x > 0 and isinstance(x, int)
+    return x > 0
 
 
 class KnapsackItem:

@@ -15,7 +15,7 @@ def fptas(problem, eps_parameter=0.5):
     max_valued_item = max(problem.items, key=lambda item: item.price)
 
     # compute prices adjustment factor
-    k = (max_valued_item.price * eps_parameter) / problem.items.number_of_items
+    k = (max_valued_item.price * eps_parameter) / problem.number_of_items
 
     prices_unadjusted = deepcopy(problem.prices)
 
