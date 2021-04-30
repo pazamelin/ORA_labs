@@ -33,7 +33,7 @@ def knapsack_dp(problem):
 
 def findsubjects(i, w, K, weights, ans, counter):
     if K[i][w] == 0:
-        return
+        return counter
 
     if K[i - 1][w] == K[i][w]:
         counter += findsubjects(i - 1, w, K, weights, ans, counter)
