@@ -32,17 +32,22 @@ def branch_and_bound(problem):
     solutions_queue = Queue()
     solutions_queue.put(best_solution)
 
+    comparisons = 0
+
     while not solutions_queue.empty():
         current_solution = solutions_queue.get()
         # index of the last added (or not) element from [0, n] range
         index = current_solution.level_index
 
+        comparisons += 1
         if current_solution.profit > best_solution.profit:
             # update best solution if needed
             best_solution = deepcopy(current_solution)
 
         if index != problem.number_of_items:
-            profit_upper_bound = upper_bound(problem, current_solution)
+            profit_upper_bound = (upper_bound(problem, current_solution))
+
+            comparisons += 1
             if profit_upper_bound >= best_solution.profit:
                 # if the partial solution can possibly result in a better solution
 
@@ -59,4 +64,5 @@ def branch_and_bound(problem):
                     new_solution_rhs.level_index = index + 1
                     solutions_queue.put(new_solution_rhs)
 
+    best_solution.counter_of_comparisons = comparisons
     return best_solution
