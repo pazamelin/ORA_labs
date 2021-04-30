@@ -70,4 +70,3 @@ jobs:
         shell: bash
         run: |
           echo "start profiling"
-          python3 profile.py
