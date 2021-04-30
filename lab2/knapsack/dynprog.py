@@ -36,9 +36,9 @@ def findsubjects(i, w, K, weights, ans, counter):
         return
 
     if K[i - 1][w] == K[i][w]:
-        findsubjects(i - 1, w, K, weights, ans)
+        findsubjects(i - 1, w, K, weights, ans, counter)
         counter += 1
     else:
         ans[i - 1] = 1
-        findsubjects(i - 1, w - weights[i - 1], K, weights, ans)
+        findsubjects(i - 1, w - weights[i - 1], K, weights, ans, counter)
         counter += 1
