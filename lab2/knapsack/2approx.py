@@ -18,8 +18,10 @@ def approx(problem):
             weight += problem.weights[T[i]]
             price += problem.prices[T[i]]
             ans[T[i]] = 1
+            solution.counter_of_comparisons += 1
         else:
             price_greedy = problem.prices[T[i]]
+            solution.counter_of_comparisons += 1
             if price_greedy > price:
                 solution.profit = price_greedy
                 solution.weight = problem.weights[T[i]]

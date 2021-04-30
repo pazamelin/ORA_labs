@@ -54,6 +54,7 @@ class KnapsackProblem:
 
 class KnapsackSolution:
     """ Class holding 0-1 Knapsack problem solution """
+    counter_of_comparisons: int
 
     def __init__(self, number_of_items, knapsack_capacity):
         self.is_item_taken: List[bool] = [False] * number_of_items
@@ -61,6 +62,7 @@ class KnapsackSolution:
         self.level_index = 0
         self.weight = 0
         self.profit = 0
+        self.counter_of_comparisons = 0
 
     def take_item(self, index, item):
         """
