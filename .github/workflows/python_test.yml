@@ -64,3 +64,10 @@ jobs:
           echo "stress tests ..."
           python3 stress_tests.py
           echo "done!"
+
+      - name: run profiling
+        working-directory: ${{github.workspace}}/lab2/
+        shell: bash
+        run: |
+          echo "start profiling"
+          python3 profile.py
