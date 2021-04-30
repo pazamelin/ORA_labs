@@ -4,7 +4,15 @@ from knapsack.approx import approx
 from knapsack.branch_and_bound import branch_and_bound
 from knapsack.fptas import fptas
 import numpy as np
+import pandas as pd
 import time
+
+
+def put(dataframe, filename):
+    """
+    saves pandas dataframe to a csv file named @filename
+    """
+    dataframe.to_csv(filename, index=True)
 
 
 def read_int(file_path):
@@ -20,64 +28,42 @@ def read_list(file_path):
 
 
 def solving_problem(file_path, algorithm):
-    capacity = read_int(file_path + "/capacity.txt")
-    weights = read_list(file_path + "/weights.txt")
-    profits = read_list(file_path + "/profits.txt")
-    solution = read_list(file_path + "/solution.txt")
+    capacity_data = read_int(file_path + "/capacity.txt")
+    weights_data = read_list(file_path + "/weights.txt")
+    profits_data = read_list(file_path + "/profits.txt")
+    solution_data = read_list(file_path + "/solution.txt")
 
-    problem = KnapsackProblem(capacity, profits, weights)
+    profit_data = 0
+    for i in range(0, len(solution_data), 1):
+        if solution_data[i]:
+            profit_data += profits_data[i]
+
+    problem = KnapsackProblem(capacity_data, profits_data, weights_data)
+
     start_time = time.time()
     solution = algorithm(problem)
     running_time = (time.time() - start_time)
 
-    return running_time
+    return running_time, solution.counter_of_comparisons, solution.profit, profit_data
 
 
-# problem 1
+algorithms = [knapsack_dp, approx, branch_and_bound, fptas]
+names = ['knapsack_dp', 'approx', 'branch_and_bound', 'fptas']
+profiling_results = pd.DataFrame(columns=['benchmark', 'algorithm', 'time', 'operations', 'profit', 'profit_dataset'])
 
-running_time_dp = solving_problem("benchmarks/01", knapsack_dp)
-running_time_approx = solving_problem("benchmarks/01", approx)
-running_time_bb = solving_problem("benchmarks/01", branch_and_bound)
-running_time_fptas = solving_problem("benchmarks/01", fptas)
+row_index = 0
+for benchmark_index in range(1, 8, 1):
+    for algorithm_index in range(0, len(algorithms), 1):
+        running_time, comparisons, profit, profit_d = solving_problem("benchmarks/0" + str(benchmark_index),
+                                                                      algorithms[algorithm_index])
 
-# problem 2
+        profiling_results.loc[row_index] = [str(benchmark_index),
+                                            names[algorithm_index],
+                                            running_time,
+                                            comparisons,
+                                            profit,
+                                            profit_d]
+        print(row_index)
+        row_index += 1
 
-running_time_dp = solving_problem("benchmarks/02", knapsack_dp)
-running_time_approx = solving_problem("benchmarks/02", approx)
-running_time_bb = solving_problem("benchmarks/02", branch_and_bound)
-running_time_fptas = solving_problem("benchmarks/02", fptas)
-
-# problem 3
-
-running_time_dp = solving_problem("benchmarks/03", knapsack_dp)
-running_time_approx = solving_problem("benchmarks/03", approx)
-running_time_bb = solving_problem("benchmarks/03", branch_and_bound)
-running_time_fptas = solving_problem("benchmarks/03", fptas)
-
-# problem 4
-
-running_time_dp = solving_problem("benchmarks/04", knapsack_dp)
-running_time_approx = solving_problem("benchmarks/04", approx)
-running_time_bb = solving_problem("benchmarks/04", branch_and_bound)
-running_time_fptas = solving_problem("benchmarks/04", fptas)
-
-# problem 5
-
-running_time_dp = solving_problem("benchmarks/05", knapsack_dp)
-running_time_approx = solving_problem("benchmarks/05", approx)
-running_time_bb = solving_problem("benchmarks/05", branch_and_bound)
-running_time_fptas = solving_problem("benchmarks/05", fptas)
-
-# problem 6
-
-running_time_dp = solving_problem("benchmarks/06", knapsack_dp)
-running_time_approx = solving_problem("benchmarks/06", approx)
-running_time_bb = solving_problem("benchmarks/06", branch_and_bound)
-running_time_fptas = solving_problem("benchmarks/06", fptas)
-
-# problem 7
-
-running_time_dp = solving_problem("benchmarks/07", knapsack_dp)
-running_time_approx = solving_problem("benchmarks/07", approx)
-running_time_bb = solving_problem("benchmarks/07", branch_and_bound)
-running_time_fptas = solving_problem("benchmarks/07", fptas)
+put(profiling_results, 'results.csv')

@@ -23,7 +23,7 @@ def knapsack_dp(problem):
     for i in range(problem.number_of_items):
         if ans[i] == 1:
             solution.weight += problem.weights[i]
-            solution.is_item_taken = True
+            solution.is_item_taken[i] = True
     solution.profit = K[problem.number_of_items][problem.capacity]
     solution.residual_capacity -= solution.weight
     solution.counter_of_comparisons = counter
