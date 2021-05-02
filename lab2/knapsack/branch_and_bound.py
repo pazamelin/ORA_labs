@@ -40,6 +40,7 @@ def branch_and_bound(problem):
         index = current_solution.level_index
 
         comparisons += 1
+
         if current_solution.profit > best_solution.profit:
             # update best solution if needed
             best_solution = deepcopy(current_solution)
@@ -47,7 +48,6 @@ def branch_and_bound(problem):
         if index != problem.number_of_items:
             profit_upper_bound = (upper_bound(problem, current_solution))
 
-            comparisons += 1
             if profit_upper_bound >= best_solution.profit:
                 # if the partial solution can possibly result in a better solution
 
