@@ -98,7 +98,6 @@ def run(cities: List[City], population_size, selection_size, mutation_rate, iter
         population.append(random_route(cities))
 
     for iteration in range(0, iterations, 1):
-        print(iteration)
         parents = roulette_wheel_selection(population, selection_size)
 
         next_generation = parents
