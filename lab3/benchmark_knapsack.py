@@ -65,5 +65,10 @@ for benchmark_index in range(1, 8, 1):
                                         best_solution]
     print(row_index)
     row_index += 1
+    average_time = 0
+    solutions_fits.clear()
+    solutions.clear()
+
+
 
 put(profiling_results, "benchmarks/knapsack/result.csv")
