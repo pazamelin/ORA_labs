@@ -1,4 +1,6 @@
 from typing import List
+from random import randrange
+from random import shuffle
 
 
 class QAProblem:
@@ -13,7 +15,38 @@ class QAProblem:
 
 
 class QASolution:
+    problem: QAProblem
     assignment: List[int]
+    cost: int
+
+    def __init__(self, problem, assignment=None, generate_random=False):
+        self.problem = problem
+        if assignment is None and generate_random:
+            # generate random assignment
+            self.assignment = [*range(0, problem.n, 1)]
+            shuffle(self.assignment)
+
+    def swap_two(self):
+        # 2-opt -- swap two factories
+        n = self.problem.n
+        if n > 2:
+            lhs = randrange(0, self.problem.n, 1)
+            rhs = randrange(0, self.problem.n, 1)
+            while lhs != rhs:
+                rhs = randrange(0, self.problem.n, 1)
+
+    def compute_cost(self):
+        result = 0
+        n = self.problem.n
+        for i in range(0, n, 1):
+            for j in range(0, n, 1):
+                for k in range(0, n, 1):
+                    for l in range(0, n, 1):
+                        if self.assignment[k] == i and self.assignment[l] == j:
+                            result += self.problem.dists[i][j] * self.problem.flows[k][l]
+
+        self.cost = result
+        return result
 
 
 def read_problem(filename):
@@ -46,3 +79,4 @@ def read_problem(filename):
         flows.append(list(map_object))
 
     return QAProblem(dists, flows)
+
