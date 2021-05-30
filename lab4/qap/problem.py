@@ -35,6 +35,12 @@ class QASolution:
             while lhs != rhs:
                 rhs = randrange(0, self.problem.n, 1)
 
+    def swap(self, left, right):
+        l_index = self.assignment.index(left)
+        r_index = self.assignment.index(right)
+        self.assignment[l_index] = right
+        self.assignment[r_index] = left
+
     def compute_cost(self):
         result = 0
         n = self.problem.n
