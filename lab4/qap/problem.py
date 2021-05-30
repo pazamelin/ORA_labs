@@ -34,12 +34,26 @@ class QASolution:
             rhs = randrange(0, self.problem.n, 1)
             while lhs != rhs:
                 rhs = randrange(0, self.problem.n, 1)
+            self.assignment[lhs], self.assignment[rhs] = self.assignment[rhs], self.assignment[lhs]
 
     def swap(self, left, right):
         l_index = self.assignment.index(left)
         r_index = self.assignment.index(right)
         self.assignment[l_index] = right
         self.assignment[r_index] = left
+
+    def swap_stochastic_2_opt(self):
+        n = self.problem.n
+        if n > 2:
+            # choose 2 random cities
+            lhs = randrange(0, self.problem.n, 1)
+            rhs = randrange(0, self.problem.n, 1)
+            while lhs != rhs:
+                rhs = randrange(0, self.problem.n, 1)
+            # rearrange cities in between
+            mid = self.assignment[lhs:rhs]
+            mid.reverse()
+            self.assignment[lhs:rhs] = mid
 
     def compute_cost(self):
         result = 0

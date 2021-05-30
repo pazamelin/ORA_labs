@@ -1,0 +1,11 @@
+,benchmark,algorithm,time,answer
+0,tai20a,LS,inf,0.0
+1,tai20a,ILS,inf,0.0
+2,tai40a,LS,inf,0.0
+3,tai40a,ILS,inf,0.0
+4,tai60a,LS,inf,0.0
+5,tai60a,ILS,inf,0.0
+6,tai80a,LS,inf,0.0
+7,tai80a,ILS,inf,0.0
+8,tai100a,LS,inf,0.0
+9,tai100a,ILS,inf,0.0

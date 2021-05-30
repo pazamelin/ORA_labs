@@ -1,7 +1,9 @@
+from qap.problem import *
+
 import copy
 from itertools import combinations
 import numpy as np
-from problem import *
+
 
 def local_search(problem: QAProblem,
                  start_point: QASolution,
