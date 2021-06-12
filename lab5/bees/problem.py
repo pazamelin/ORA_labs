@@ -11,6 +11,7 @@ class Node:
 
     def __init__(self, index, demand, x, y):
         self.index = index
+        self.demand = demand
         self.x = x
         self.y = y
 
@@ -26,3 +27,10 @@ class VRProblem:
         self.truck_capacity = truck_capacity
         self.number_of_nodes = len(nodes)
         self.nodes = nodes
+
+
+class VRSolution:
+    routes: List[int]
+
+    def __init__(self, routes):
+        self.routes = routes
