@@ -1,4 +1,5 @@
 from bees.problem import *
+from bees.algorithm import *
 
 import time
 import pandas as pd
@@ -59,6 +60,27 @@ def read_benchmark(filename):
     return result, optimal_value
 
 
+def save_solutions(solution_to_save, filename):
+    f = open(filename, "w")
+
+    route_delimiters = [i for i, x in enumerate(solution_to_save.routes) if x == 0]
+    route_delimiters.append(len(solution_to_save.routes))
+
+    current_route = 1
+    current_position = 0
+    # enumerating routes:
+    for route in range(0, len(route_delimiters), 1):
+        if route_delimiters[route] <= len(solution_to_save.routes):
+            route_list = solution_to_save.routes[current_position:route_delimiters[route]]
+            f.write('Route #{}: '.format(current_route) + ' '.join([str(node) for node in route_list]) + '\n')
+
+            current_route += 1
+            current_position += abs(current_position - route_delimiters[route]) + 1
+
+    f.write('cost {}\n'.format(solution_to_save.cost_function()))
+    f.close()
+
+
 folder = 'benchmarks/data/'
 prefixes = ['A/', 'B/']
 
@@ -68,4 +90,11 @@ for prefix in prefixes:
     for benchmark in benchmark_list:
         if os.path.isfile(os.path.join(path, benchmark)):
             problem, optimal_value = read_benchmark(filename=path + benchmark)
-            print(optimal_value)
+            problem.set_cost_function_parameters(0.5, 0.5, 100, 100)
+            solution = generate_random_solution(problem)
+
+            print(benchmark)
+            print(solution.routes)
+            print(solution.cost_function())
+
+            save_solutions(solution, 'benchmarks/solutions/' + prefix + '/' + benchmark[:-3] + 'sol')
