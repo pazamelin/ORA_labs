@@ -83,7 +83,8 @@ def save_solutions(solution_to_save, filename):
 
 folder = 'benchmarks/data/'
 prefixes = ['A/', 'B/']
-
+#prefixes = ['A/']
+#prefixes = ['B/']
 benchmarks_A = []
 results_A = []
 optimals_A = []
@@ -103,7 +104,7 @@ for prefix in prefixes:
 
             print('running {} ...'.format(benchmark))
 
-            solution = bee_algorithm(problem, 25, 25, 25, 25)
+            solution = bee_algorithm(problem, 10, 10, 50, 20)
             save_solutions(solution, 'benchmarks/solutions/' + prefix + '/' + benchmark[:-3] + 'sol')
 
             print('done {}!'.format(benchmark))

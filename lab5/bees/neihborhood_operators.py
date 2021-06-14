@@ -29,13 +29,13 @@ def random_insert(solution: VRSolution):
     if insert_point > insert_position:
         new_solution_vector = solution.routes[:insert_position]
         new_solution_vector.append(solution.routes[insert_point])
-        new_solution_vector.append(solution.routes[insert_position:insert_point])
-        new_solution_vector.append(solution.routes[insert_point:])
+        new_solution_vector = new_solution_vector + solution.routes[insert_position:insert_point]
+        new_solution_vector = new_solution_vector + solution.routes[(insert_point+1):]
     else:
         new_solution_vector = solution.routes[:insert_point]
-        new_solution_vector.append(solution.routes[insert_point:insert_position])
+        new_solution_vector = new_solution_vector + solution.routes[(insert_point+1):insert_position]
         new_solution_vector.append(solution.routes[insert_point])
-        new_solution_vector.append(solution.routes[insert_position:])
+        new_solution_vector = new_solution_vector + solution.routes[insert_position:]
 
     solution.routes = new_solution_vector
     return solution

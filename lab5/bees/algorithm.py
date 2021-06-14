@@ -70,7 +70,7 @@ def apply_neighbor_operator(solution, neighborhood_operators):
     # generate neighbor
     neighbor = copy.deepcopy(solution)
     neighborhood_operator_index = random.randint(0, len(neighborhood_operators) - 1)
-    neighborhood_operator = neighborhood_operators[0]
+    neighborhood_operator = neighborhood_operators[neighborhood_operator_index]
     neighbor = neighborhood_operator(neighbor)
     return neighbor
 
