@@ -77,7 +77,7 @@ def save_solutions(solution_to_save, filename):
             current_route += 1
             current_position += abs(current_position - route_delimiters[route]) + 1
 
-    f.write('cost {}\n'.format(solution_to_save.cost_function()))
+    f.write('cost {}\n'.format(solution_to_save.cost_clean))
     f.close()
 
 
@@ -90,11 +90,13 @@ for prefix in prefixes:
     for benchmark in benchmark_list:
         if os.path.isfile(os.path.join(path, benchmark)):
             problem, optimal_value = read_benchmark(filename=path + benchmark)
-            problem.set_cost_function_parameters(0.5, 0.5, 100, 100)
-            solution = generate_random_solution(problem)
+            length_limit = (problem.number_of_nodes / problem.number_of_trucks) * 2
+            problem.set_cost_function_parameters(0.5, 0.5, problem.truck_capacity, length_limit)
 
-            print(benchmark)
-            print(solution.routes)
-            print(solution.cost_function())
+            print('running {} ...'.format(benchmark))
+
+            solution = bee_algorithm(problem, 10, 10, 50, 10)
 
             save_solutions(solution, 'benchmarks/solutions/' + prefix + '/' + benchmark[:-3] + 'sol')
+            print('done {}!'.format(benchmark))
+            print()

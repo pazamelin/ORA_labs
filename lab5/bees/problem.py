@@ -56,6 +56,12 @@ class VRProblem:
 class VRSolution:
     routes: List[int]
     problem: VRProblem
+    update_attempt_counter: int = 0
+    cost: float
+    cost_clean: float
+
+    is_capacity_violated = False
+    is_length_violated = False
 
     def __init__(self, problem, routes):
         self.routes = routes
@@ -91,6 +97,14 @@ class VRSolution:
         result = total_cost
         result += self.problem.alpha * total_capacity_violation
         result += self.problem.beta * total_length_violation
+
+        if total_length_violation > 0:
+            self.is_length_violated = True
+
+        if total_capacity_violation > 0:
+            self.is_capacity_violated = True
+
+        self.cost_clean = total_cost
         return result
 
     def route_cost_function(self, route_start, route_end):
