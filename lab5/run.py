@@ -84,6 +84,14 @@ def save_solutions(solution_to_save, filename):
 folder = 'benchmarks/data/'
 prefixes = ['A/', 'B/']
 
+benchmarks_A = []
+results_A = []
+optimals_A = []
+
+benchmarks_B = []
+results_B = []
+optimals_B = []
+
 for prefix in prefixes:
     path = folder + prefix
     benchmark_list = os.listdir(path)
@@ -95,8 +103,22 @@ for prefix in prefixes:
 
             print('running {} ...'.format(benchmark))
 
-            solution = bee_algorithm(problem, 10, 10, 50, 10)
-
+            solution = bee_algorithm(problem, 25, 25, 25, 25)
             save_solutions(solution, 'benchmarks/solutions/' + prefix + '/' + benchmark[:-3] + 'sol')
+
             print('done {}!'.format(benchmark))
             print()
+
+            if prefix == 'A/':
+                benchmarks_A.append(benchmark)
+                results_A.append(solution.cost_clean)
+                optimals_A.append(optimal_value)
+            else:
+                benchmarks_B.append(benchmark)
+                results_B.append(solution.cost_clean)
+                optimals_B.append(optimal_value)
+
+# result plots:
+import plot
+plot.plot_benchmarking_results(benchmarks_A, results_A, optimals_A, 'A_cmp')
+plot.plot_benchmarking_results(benchmarks_B, results_B, optimals_B, 'B_cmp')
